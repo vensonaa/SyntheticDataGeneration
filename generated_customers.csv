@@ -1,0 +1,201 @@
+customer_id,first_name,last_name,email,phone,address,registration_date,customer_segment,is_active
+262,Stacy Lucas,Noah Crawford,snorman@example.com,(733)742-8477,"82685 Daniel Ridge
+New Jonathanland, SD 52331",2025-03-19,Platinum,False
+1641,Jacqueline Hughes,Tiffany Cummings,autumnmatthews@example.org,001-879-280-6296x35951,"PSC 3106, Box 2194
+APO AE 25836",2025-01-25,Platinum,False
+20,Erica Williams,Sarah Cobb,leslie90@example.org,843.477.6864,"62779 Jamie Lock Suite 378
+Jessicashire, OH 05204",2025-02-01,Bronze,True
+380,Randy Marshall,Sarah Mcclain,laurawood@example.org,001-886-908-7390x1760,"7130 Thompson Parks Apt. 144
+Brooksview, AK 46332",2024-10-15,Bronze,True
+1029,Ryan Mullen,Rick Lewis,charlottehampton@example.com,465.672.2979x6844,"74492 Rachel Walk
+Lopezside, WI 08575",2024-11-14,Gold,True
+411,Mr. Jim Evans,Becky Brown,patrick89@example.com,925-324-0927,"8075 Wilson Corner Apt. 111
+Suzanneborough, NV 72469",2025-07-04,Bronze,True
+1862,Melissa Mcgrath,Katherine Morrison,natashaarias@example.net,(527)744-3563,"84211 Thompson River Suite 611
+Lisamouth, CO 45235",2025-06-08,Gold,False
+1126,Collin Shelton,Susan Sharp,davisderrick@example.org,851-492-6439x801,"239 Bailey Brooks
+West Erinview, MD 22350",2025-05-06,Platinum,True
+1252,Kenneth Williams,Judy Moody,aholmes@example.com,+1-485-232-6638x6707,"USCGC Welch
+FPO AA 90969",2024-10-31,Bronze,False
+795,Robert Mcdonald,Jessica Sims,hjones@example.net,6755816467,"65738 Smith Roads Suite 769
+West Jesusmouth, GA 82464",2025-05-17,Silver,True
+1877,Kimberly Stanley,Deanna Carroll,obrienbenjamin@example.net,+1-994-505-4084x5296,"0100 Robert Mission
+Lake Kyleburgh, OH 19103",2024-12-20,Bronze,False
+1085,Dylan Edwards,Pamela Henry,brian58@example.com,001-827-910-1584x74196,"6701 Moore Way Apt. 325
+East Andrewland, TX 63100",2024-11-01,Silver,True
+1232,George Fritz,Michael Smith,kristen97@example.org,849.380.0941x10450,"961 Woodward Vista
+North Julie, MN 85627",2025-06-28,Gold,True
+545,April Turner,Christopher Love,jennifermcclain@example.org,454-346-1592x14076,"8356 Diana Keys Apt. 626
+Port Ian, CO 50382",2025-05-12,Gold,True
+409,Elizabeth Gutierrez,Brian Wilson,randydavid@example.net,001-992-575-1696x696,"195 Stephanie Parks Apt. 646
+Reyesmouth, NY 34140",2024-11-24,Gold,False
+1246,Marcus Bennett,Deborah Rhodes,vgonzalez@example.net,001-210-572-3245x6255,"5978 George Alley Apt. 587
+North Andrea, GU 45058",2024-11-30,Bronze,True
+34,Andrea Armstrong,Lauren Clark,charleshayes@example.org,(896)558-2651x3100,"802 Moses Streets
+East Jessica, KS 54926",2025-04-30,Silver,True
+853,Amanda Stone,Christopher Foster,michelle20@example.com,(381)743-3335,"681 Hall Locks Apt. 795
+Port Matthewburgh, PW 75572",2025-07-06,Silver,False
+499,Jeff York,Dustin Reeves,wlove@example.net,+1-504-846-1196,"0375 May Village Apt. 531
+Suttonshire, FM 26136",2025-04-20,Bronze,True
+318,Dominic Rodgers,Tammy Chavez,thomasashley@example.org,(466)753-1758,"USS Hall
+FPO AE 98084",2024-10-05,Bronze,True
+1623,Stephanie Norman,Colin Pearson,qbooker@example.com,361-269-6496x7916,"408 Brown Manor
+North Katelyn, ND 21120",2025-08-02,Bronze,False
+1524,Courtney Bowman,Nancy Pineda,alexis82@example.com,(760)368-2471x588,"710 Martin Throughway
+Shawnton, WA 53361",2025-01-13,Gold,False
+370,Michael Howard,Terry Clark,whitney70@example.com,687-328-9585x6491,"00633 Brown Squares Apt. 360
+South Wendyburgh, PR 19161",2025-06-17,Gold,False
+1114,Dawn Martinez,Tyler Lopez,wilsonsherri@example.org,810.353.6172x694,"74627 Sosa Views Suite 088
+Baileybury, DC 06327",2024-09-14,Silver,True
+1706,Matthew Fox,Jacqueline Alexander,odelgado@example.com,459-497-2722x66666,"7306 Nancy Track
+East Joshua, NV 87511",2024-10-12,Silver,True
+955,Eric Johnson,Elizabeth Rojas,charles79@example.net,+1-761-249-9052x73852,"Unit 7127 Box 8877
+DPO AA 59895",2024-12-21,Bronze,False
+420,Luis Cole,Alice Wheeler,evargas@example.org,535.488.5788,"1840 Christie Mews
+Lake Mirandamouth, NM 21193",2025-06-27,Platinum,False
+936,Michael Carroll,Stephanie Doyle,sally71@example.net,001-262-834-9088x27433,"39677 Stanley Well
+Danielhaven, OH 98869",2025-01-26,Platinum,False
+1164,Emily Finley,Leonard Hill,sandra43@example.org,001-638-991-8459x64987,"Unit 8018 Box 1637
+DPO AP 24813",2025-06-14,Gold,True
+866,Renee Anderson,Kayla Mendoza,qreese@example.com,851-583-6021,"99368 Marie Meadow
+Marshfort, ND 46702",2025-06-05,Platinum,True
+1639,Janice Gregory,Michelle Martin,tannerdaniel@example.net,(538)669-1832x9618,"252 Bennett Plain
+East Jasonmouth, FM 48821",2025-01-28,Gold,False
+474,Sandra Liu,Lisa Stokes,rachel08@example.net,987.912.9369x021,"671 Heather Run Apt. 640
+New Richardport, NE 00926",2024-11-21,Bronze,True
+1890,Eric Brown,Connie Walker,nford@example.org,001-352-853-0010x3143,"2073 Barbara Extension Suite 302
+Anthonyfurt, DE 17683",2025-08-05,Platinum,True
+810,Mr. Timothy Williams,Kristina Allen,ashley59@example.org,532-711-4801,"73505 Anthony Pine
+Waynemouth, WI 93497",2025-07-21,Platinum,True
+1854,Shelly Walton,Tina Ward,sparksmelissa@example.net,001-213-299-3306x631,"6434 Spencer Cape
+Lake Joelton, FM 21359",2024-11-17,Gold,False
+900,Laura Lloyd,Christina Perez,pmatthews@example.com,253.467.7213,"78414 Norris Point
+Rebeccatown, MA 02051",2024-09-18,Platinum,False
+613,Keith Moreno,Robert Fisher,lsanders@example.com,617-255-9119,"65601 Lawrence Greens
+Sandraton, FL 39724",2025-04-13,Platinum,False
+816,Allison Castro,Jared Wright,timothy43@example.com,882-821-1843x77880,"88588 Johnson Meadows Apt. 143
+Taylormouth, VT 10172",2024-10-13,Gold,False
+112,Mary Howard,Joann Reyes,robingeorge@example.org,652-797-5184x365,"200 Nathan Rue
+North Debra, NY 10244",2025-01-17,Silver,False
+583,Mike Figueroa,Kevin Perez,loganelizabeth@example.com,764.810.2873x409,"600 Susan Crest
+Lake Ryan, NJ 94147",2025-05-04,Silver,True
+1299,Christine Henry,Amy Simmons,wshaw@example.com,5035920133,"3997 Jennifer Ways
+Port Glennborough, SD 62497",2025-03-23,Platinum,True
+288,Patricia Glenn,Paul Carter,wolfmichael@example.org,001-663-466-3603,"07462 Pearson Stravenue
+North Anthony, DE 10884",2024-09-23,Silver,False
+785,Cynthia Harris,Zachary Gutierrez,jasonwashington@example.org,406.794.6626x556,"585 Cheryl Trafficway
+North Suzanne, MN 99572",2024-10-07,Silver,False
+745,Ethan Salazar,Jake Powers,cynthiathomas@example.org,(226)799-1503x9892,"7884 Levy Curve Suite 167
+Markburgh, OK 73767",2025-07-16,Gold,False
+1424,Felicia Weaver,Jason Hayes,dyerrhonda@example.net,703-576-4899,"USCGC Martin
+FPO AA 11416",2024-10-26,Bronze,True
+1647,Melanie Kerr,Dylan Berg,gallaghermonique@example.org,(867)599-2700x914,"19549 Theresa Bypass Suite 171
+Katrinaton, OH 40256",2024-11-03,Platinum,True
+367,Kathryn Young,Adam Crawford,diana42@example.com,001-569-831-8263,"24750 Rich Rapids
+Port John, AZ 33929",2025-02-19,Bronze,False
+1236,Joseph Peterson,Robert Jones,hensleyjason@example.org,203-705-1110,"946 Monica Lodge Apt. 542
+New Andrewmouth, GA 07914",2024-09-21,Bronze,False
+1325,Carolyn Johnson DVM,Jennifer Nguyen,uhanna@example.net,494.374.7012,"970 Ernest Extension Apt. 419
+East Chase, NE 16513",2025-03-19,Platinum,False
+955,Thomas Perez,Larry Fleming,hansenluis@example.net,2983529258,"822 Rodriguez Highway Apt. 806
+South Drewshire, WV 31733",2025-06-15,Bronze,True
+1630,Ashley Barber,Erin Morales,craiggarcia@example.org,234-734-5515x445,"570 Johnson Locks Suite 062
+East Tammyfort, MP 42204",2025-05-16,Platinum,False
+1726,John Mitchell,Larry Ramirez,fjohnson@example.com,001-412-488-7046,"957 Bradley Field
+New Zacharymouth, IN 15133",2024-11-09,Gold,True
+449,Rebecca Morgan,Dr. Darren Booth,nathaniel81@example.org,+1-725-354-1873x0980,"7913 Brandon Ports
+Andrewhaven, IL 57262",2025-06-05,Bronze,False
+1117,Teresa Torres,Michael Curry,mackenzie87@example.org,374.230.4843,"585 Yang Junctions Suite 288
+West Steven, MA 98643",2024-09-10,Gold,True
+1324,Catherine Odom,Michelle Moreno,woodwardtaylor@example.org,493.457.6412,"5335 Thomas Village
+Lake Joanna, AK 19957",2025-05-23,Bronze,False
+1256,Susan Davis,Joel Stevens,vramirez@example.com,346-404-4891x64892,"960 Ramirez Square Apt. 189
+Andrewfurt, SD 74514",2024-10-03,Silver,False
+1041,John Martinez,Rhonda Garrison,morrisondavid@example.org,828.858.9646x30589,"663 Brown Ville
+Davisside, NY 89130",2024-10-19,Platinum,True
+590,Kyle Wallace,Kelly Hale,harpercody@example.org,(430)543-9862x545,"19610 Knox Lakes
+Meganbury, PA 47628",2024-10-30,Gold,True
+430,Anthony Hamilton,Kelly Owens,youngrobert@example.com,875.733.8518,"1009 Amanda Flats Apt. 454
+Austinmouth, MO 59857",2025-03-29,Gold,False
+404,Roberta Stevenson,Ernest Sandoval,ncooper@example.com,322-622-8210,"4638 Sarah Curve Apt. 239
+Harrisborough, LA 66522",2025-02-02,Gold,False
+689,Victoria Parker,Michelle Nguyen,briggskevin@example.org,(287)445-3869x50229,"457 David Trace
+Smithhaven, ND 60557",2025-08-03,Gold,True
+1199,Gary Lucas,David Smith,jackson19@example.org,+1-610-791-7263,"617 Sanford Trafficway Suite 449
+East Richardberg, MT 77584",2024-12-01,Silver,True
+1333,Melissa Burgess,Mr. Edgar Tucker DDS,sarahmoore@example.org,001-358-964-6316x5149,"3107 Amy Avenue
+East Victoria, OR 52437",2025-08-07,Platinum,True
+1088,Caitlin Garcia,Peter Russell,jennifer99@example.com,814-661-9596x8407,"73776 Carrie Divide
+Hayesfort, MH 01790",2024-11-13,Silver,True
+618,Ruben Grant,Tracy Suarez,lorrainebell@example.com,+1-564-702-9708,"843 Griffin Valleys
+Lake Janeton, WY 50561",2025-04-04,Platinum,False
+274,Lisa Simmons MD,Brandon Baldwin,jstephens@example.com,991-684-8092x8636,"37862 Miller Mews
+Port Pamela, GU 46509",2024-11-14,Silver,False
+913,Sarah Hoffman,Morgan Davis,martha42@example.com,001-352-706-4403x20907,"0950 Valdez Route Suite 035
+Robertsport, ID 00927",2025-07-18,Gold,True
+455,Lisa Preston,Justin Camacho,michael88@example.com,632-645-5049,"650 Collins Burg Suite 275
+Vegamouth, NC 60907",2024-11-17,Bronze,True
+1360,Rebecca Woods,Amanda James,wnelson@example.net,(605)222-9713x328,"755 Flowers Station
+Daughertychester, CO 73247",2025-04-27,Silver,True
+484,Elizabeth Richardson,Christine Hancock,hansendevin@example.net,5064247498,"0389 Harding Groves
+Georgetown, IL 78874",2024-09-24,Bronze,False
+1692,Jennifer King,Sara Porter,david38@example.net,227.443.7950,"7607 Katherine Run Apt. 451
+Griffithfurt, OK 56042",2025-03-28,Bronze,False
+1646,Pamela Good,Dean Freeman,natalie12@example.com,(582)751-7902x196,"365 Gallagher Loop
+South Amberside, KS 40723",2025-03-27,Silver,False
+923,Pamela Soto,Alexis Fisher,ncox@example.com,713-944-4676x346,"7322 Mark Island
+East Ericfort, ME 13761",2025-03-19,Gold,False
+1169,Laura Watson DVM,Natalie Mason,matthewmartinez@example.net,659-553-0824x4188,"3908 Rodriguez Hills Suite 144
+West Ruben, MS 51824",2025-08-20,Platinum,True
+1468,Danielle Mitchell,Jason Martin,emorales@example.com,202.631.2691x3999,"2579 Daniels Mews Apt. 864
+South Kimberlytown, TX 37359",2024-08-28,Silver,True
+1615,Ricardo Johnson,Ashley Lewis,gregory28@example.org,(464)364-5470,"301 Navarro Overpass Suite 931
+Brookstown, NV 79575",2024-12-01,Silver,True
+1405,Kelly Lopez,Jennifer Stewart,sarahporter@example.com,(270)453-3558x6442,"6785 Brian Junctions Suite 305
+Taylorville, AK 16329",2025-07-02,Bronze,True
+202,Jason Wood,Benjamin Williams,hnavarro@example.com,(404)268-5901x052,"01725 Benjamin Haven
+Port Nicholas, VT 84504",2024-11-07,Bronze,True
+225,James Kennedy,Theresa Jennings,urangel@example.net,608-497-0582,"131 West Roads
+Newmanton, MP 67496",2025-03-14,Silver,False
+1956,Ryan Roberts,Melanie Butler,simmonscraig@example.org,841.283.9491x08406,"284 Alvarado Crossing Suite 218
+Port Williamside, PW 80822",2024-11-30,Gold,True
+645,John Stewart,Lee Steele,susan13@example.org,+1-957-632-4432x697,"701 Darrell Island
+Kellychester, OR 56857",2025-02-03,Bronze,False
+325,Jennifer Taylor,Amanda Ward,ramosjoseph@example.com,(583)842-1835x65711,"11864 Jessica Centers Suite 504
+Gateshaven, UT 80836",2024-09-09,Bronze,False
+20,Caleb Clark,Elizabeth Lewis,hernandezalexandria@example.org,6909906124,"Unit 2043 Box 8613
+DPO AA 74875",2025-03-09,Silver,True
+945,Mark Harris,Anthony Hunter,ginapadilla@example.org,312-611-0273,"477 Scott Estates
+Port Alexshire, MS 17044",2024-12-26,Bronze,True
+569,Julie Walker,Daniel Taylor,gloriajarvis@example.com,(424)483-3205,"637 Jones Hollow
+Port Cathy, WA 67662",2024-08-27,Bronze,False
+869,Peter Hudson,Mr. Mark Martinez,williamscharles@example.com,453-273-6056x553,"9262 Robinson Isle
+Lake Kimberly, TX 51926",2024-09-14,Platinum,True
+1383,Hannah Fox,Samuel Morris,finleysusan@example.org,505.888.2299x7793,"685 Shawn Trafficway
+East Gregory, OK 09281",2025-02-15,Silver,True
+1180,Andrew Edwards,Jamie Townsend,fhutchinson@example.org,001-982-810-7284,"6315 Garcia Glen Suite 965
+Escobarside, MS 61762",2025-05-09,Platinum,True
+43,Beth Olsen,Greg Santos,scott82@example.com,(773)888-4718x869,"9027 Danielle Brooks Apt. 731
+Lawrencefort, MS 10854",2025-03-14,Silver,False
+1497,Michael Jones,Becky Mack,kristina63@example.com,+1-488-413-7369x62753,"7078 Brittany Rue
+New Lauraberg, MA 70222",2025-07-06,Gold,False
+986,Pamela Dominguez,Nicole Rivera DVM,rodriguezjamie@example.com,521.511.3857x655,"97156 Luna Meadows
+New Vincentchester, OK 30665",2025-01-01,Platinum,False
+898,Maria Gonzalez,Juan Cook,romerojoseph@example.org,(448)507-9630x87592,"1836 Tamara Port
+Williamhaven, VA 18133",2025-07-29,Bronze,True
+202,Jennifer Jimenez,Norman Ruiz,yadams@example.org,789.333.1712,"PSC 4526, Box 8163
+APO AP 38732",2025-03-02,Platinum,True
+992,Lisa Martinez,Kathy Howe,sdonovan@example.net,001-439-804-4563x348,"044 Peter Mission Apt. 489
+Jodihaven, WV 28671",2024-12-16,Silver,True
+232,Amy Mendoza,Jasmin Brown,ronaldrollins@example.org,(433)618-0967,"USS Daugherty
+FPO AA 43097",2025-07-17,Platinum,True
+1315,Samantha Lamb,Tony Hoffman,brittanyhernandez@example.com,741-924-6455,"742 Jenna Corners
+Drakeshire, PA 56894",2024-12-30,Silver,True
+1713,Matthew Curry,Robert Chapman,angela22@example.com,725.638.4156x0536,"993 Morris Skyway
+New Paul, ME 47925",2025-01-23,Silver,True
+1769,Diana Ross,James Joseph,jamestravis@example.org,(893)518-7451x54214,"72435 Seth Locks Suite 742
+East Jasonview, VA 59993",2025-04-30,Silver,True
+1943,Adam Daniel,Sandra Sherman,mhayes@example.net,001-816-275-5899x627,"791 David Gateway
+New Christopherton, LA 36729",2024-11-24,Gold,True
+1621,Melissa Rosales,Regina Franklin,ocarter@example.com,2545111239,"6322 Katrina Knoll
+Gomezshire, NV 24814",2025-07-21,Bronze,True

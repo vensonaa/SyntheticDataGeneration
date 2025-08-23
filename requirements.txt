@@ -1,0 +1,9 @@
+langgraph==0.2.16
+langchain==0.2.16
+langchain-openai==0.1.25
+pydantic==2.8.2
+faker==25.2.0
+pandas==2.2.1
+numpy==1.26.4
+python-dotenv==1.0.1
+typing-extensions==4.12.2
