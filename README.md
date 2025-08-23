@@ -34,6 +34,7 @@ This solution implements a LangGraph-based workflow for synthetic data generatio
 - **Quality Assurance**: Built-in validation and error handling
 - **Multiple Generation Strategies**: Standard, Parallel, Adaptive
 - **Relationship Support**: Maintain referential integrity
+- **SQLite Integration**: Persistent storage and data management
 - **Extensible Design**: Easy to add custom generators and validators
 
 ## 🚀 Quick Start
@@ -144,7 +145,25 @@ print(f"Validity: {quality_report['validity']:.1f}%")
 
 ## 🛒 Examples
 
-### User Data Generation
+### Web Interface (Recommended)
+
+```bash
+python app.py
+```
+
+Then open your browser to **http://localhost:5001**
+
+**Features:**
+- Beautiful, modern web interface
+- Drag-and-drop schema configuration
+- Real-time validation and preview
+- Instant CSV/JSON export
+- SQLite database integration with saved datasets management
+- Mobile-responsive design
+
+### Command Line Examples
+
+#### User Data Generation
 
 ```bash
 python examples/user_data_example.py
@@ -156,7 +175,7 @@ Generates user profiles with:
 - Account details (registration date, subscription type)
 - Business metrics (monthly spend)
 
-### E-commerce Data Generation
+#### E-commerce Data Generation
 
 ```bash
 python examples/ecommerce_data_example.py
@@ -168,7 +187,57 @@ Creates a complete e-commerce dataset with:
 - Orders (customer reference, status, payment)
 - Order Items (product reference, quantity, pricing)
 
+#### GenAI with Groq
+
+```bash
+python examples/groq_example.py
+```
+
+Demonstrates GenAI capabilities:
+- Model performance comparison
+- Temperature effects on generation
+- Optimization techniques
+- Contextual data generation
+
+#### Environment Configuration
+
+```bash
+python examples/env_config_example.py
+```
+
+Shows environment configuration management:
+- .env file setup and usage
+- Configuration validation
+- Environment-specific settings
+- Override capabilities
+
 ## 🔌 Extending the System
+
+### GenAI Integration with Groq
+
+The system includes comprehensive GenAI capabilities using Groq for ultra-fast inference:
+
+```python
+from src.genai_data_generator import GenAISyntheticDataGenerator
+from src.groq_config import GroqConfig
+
+# Create GenAI-enhanced generator
+generator = GenAISyntheticDataGenerator(model_name="llama3-8b-8192")
+
+# Generate contextually aware data
+results = generator.generate_data(
+    schema,
+    use_contextual_generation=True,
+    quality_enhancement=True
+)
+```
+
+### Available Groq Models
+
+- **llama3-8b-8192**: Fast and efficient (recommended for speed)
+- **llama3-70b-8192**: High quality generation
+- **mixtral-8x7b-32768**: Large context window
+- **gemma2-9b-it**: Instruction-tuned for structured data
 
 ### Custom Field Generators
 
@@ -229,13 +298,31 @@ python examples/ecommerce_data_example.py
 Create a `.env` file for configuration:
 
 ```env
-# Optional: OpenAI API key for advanced features
-OPENAI_API_KEY=your_api_key_here
+# Groq API Configuration
+GROQ_API_KEY=your_groq_api_key_here
 
-# Generation settings
+# Generation Settings
 DEFAULT_RECORD_COUNT=1000
 DEFAULT_BATCH_SIZE=10
+
+# Model Configuration
+DEFAULT_GROQ_MODEL=llama3-8b-8192
+DEFAULT_TEMPERATURE=0.5
+
+# Quality Settings
+ENABLE_QUALITY_ENHANCEMENT=true
+ENABLE_CONTEXTUAL_GENERATION=true
+
+# Performance Settings
+RECURSION_LIMIT=200
+MAX_RETRIES=3
+
+# Output Settings
+DEFAULT_OUTPUT_FORMAT=json
+ENABLE_CSV_EXPORT=true
 ```
+
+**Note**: Copy `.env.example` to `.env` and update with your actual values.
 
 ## 📈 Performance Considerations
 

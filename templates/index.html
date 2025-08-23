@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Synthetic Data Generator - Powered by Groq</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-database me-2"></i>
+                Synthetic Data Generator
+            </a>
+            <div class="navbar-nav ms-auto">
+                <span class="navbar-text">
+                    <i class="fas fa-bolt me-1"></i>
+                    Powered by Groq
+                </span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <!-- Left Panel - Schema Configuration -->
+            <div class="col-lg-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">
+                            <i class="fas fa-cogs me-2"></i>
+                            Schema Configuration
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Schema Templates -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Quick Templates</label>
+                            <select class="form-select" id="schemaTemplate">
+                                <option value="">Choose a template...</option>
+                                <option value="user_data">User Data</option>
+                                <option value="ecommerce_products">E-commerce Products</option>
+                                <option value="employee_data">Employee Data</option>
+                                <option value="healthcare_patients">Healthcare Patients</option>
+                            </select>
+                        </div>
+
+                        <!-- Schema Name -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Schema Name</label>
+                            <input type="text" class="form-control" id="schemaName" placeholder="Enter schema name">
+                        </div>
+
+                        <!-- Schema Description -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Description</label>
+                            <textarea class="form-control" id="schemaDescription" rows="2" placeholder="Enter schema description"></textarea>
+                        </div>
+
+                        <!-- Fields Section -->
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <label class="form-label fw-bold mb-0">Fields</label>
+                                <button class="btn btn-sm btn-outline-primary" onclick="addField()">
+                                    <i class="fas fa-plus me-1"></i>
+                                    Add Field
+                                </button>
+                            </div>
+                            <div id="fieldsContainer">
+                                <!-- Fields will be added here dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Validation Button -->
+                        <div class="mb-3">
+                            <button class="btn btn-outline-secondary w-100" onclick="validateSchema()">
+                                <i class="fas fa-check me-1"></i>
+                                Validate Schema
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Generation Settings -->
+                <div class="card shadow-sm mt-3">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">
+                            <i class="fas fa-sliders-h me-2"></i>
+                            Generation Settings
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Model Selection -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Groq Model</label>
+                            <select class="form-select" id="modelSelect">
+                                <!-- Models will be loaded dynamically -->
+                            </select>
+                        </div>
+
+                        <!-- Temperature -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Temperature</label>
+                            <div class="d-flex align-items-center">
+                                <input type="range" class="form-range flex-grow-1 me-2" id="temperatureSlider" min="0" max="1" step="0.1" value="0.5">
+                                <span class="badge bg-secondary" id="temperatureValue">0.5</span>
+                            </div>
+                            <div class="form-text">
+                                <small>Lower = more consistent, Higher = more creative</small>
+                            </div>
+                        </div>
+
+                        <!-- Record Count -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Record Count</label>
+                            <input type="number" class="form-control" id="recordCount" value="100" min="1" max="10000">
+                        </div>
+
+                        <!-- Quality Options -->
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="contextualGeneration" checked>
+                                <label class="form-check-label" for="contextualGeneration">
+                                    Contextual Generation
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="qualityEnhancement" checked>
+                                <label class="form-check-label" for="qualityEnhancement">
+                                    Quality Enhancement
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Generate Button -->
+                        <button class="btn btn-primary w-100" onclick="generateData()" id="generateBtn">
+                            <i class="fas fa-magic me-1"></i>
+                            Generate Data
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel - Results -->
+            <div class="col-lg-8">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-light">
+                        <!-- Tabs -->
+                        <ul class="nav nav-tabs card-header-tabs" id="mainTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="generated-tab" data-bs-toggle="tab" data-bs-target="#generated-pane" type="button" role="tab">
+                                    <i class="fas fa-chart-bar me-2"></i>
+                                    Generated Data
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="datasets-tab" data-bs-toggle="tab" data-bs-target="#datasets-pane" type="button" role="tab">
+                                    <i class="fas fa-database me-2"></i>
+                                    Saved Datasets
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <!-- Tab Content -->
+                        <div class="tab-content" id="mainTabsContent">
+                            <!-- Generated Data Tab -->
+                            <div class="tab-pane fade show active" id="generated-pane" role="tabpanel">
+                        <!-- Loading Indicator -->
+                        <div id="loadingIndicator" class="text-center d-none">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2">Generating synthetic data...</p>
+                        </div>
+
+                        <!-- Results Container -->
+                        <div id="resultsContainer">
+                            <!-- Welcome Message -->
+                            <div class="text-center text-muted py-5">
+                                <i class="fas fa-database fa-3x mb-3"></i>
+                                <h4>Welcome to Synthetic Data Generator</h4>
+                                <p>Configure your schema and generation settings to get started.</p>
+                            </div>
+                        </div>
+
+                        <!-- Export Buttons -->
+                        <div id="exportButtons" class="mt-3 d-none">
+                            <hr>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-outline-success" onclick="exportData('csv')">
+                                    <i class="fas fa-file-csv me-1"></i>
+                                    Export CSV
+                                </button>
+                                <button class="btn btn-outline-info" onclick="exportData('json')">
+                                    <i class="fas fa-file-code me-1"></i>
+                                    Export JSON
+                                </button>
+                            </div>
+                        </div>
+                            </div>
+
+                            <!-- Saved Datasets Tab -->
+                            <div class="tab-pane fade" id="datasets-pane" role="tabpanel">
+                                <!-- Database Stats -->
+                                <div id="databaseStats" class="mb-4">
+                                    <div class="row g-3">
+                                        <div class="col-md-4">
+                                            <div class="card border-primary">
+                                                <div class="card-body text-center">
+                                                    <i class="fas fa-database fa-2x text-primary mb-2"></i>
+                                                    <h5 class="card-title mb-1" id="totalDatasets">-</h5>
+                                                    <p class="card-text small text-muted">Total Datasets</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="card border-success">
+                                                <div class="card-body text-center">
+                                                    <i class="fas fa-table fa-2x text-success mb-2"></i>
+                                                    <h5 class="card-title mb-1" id="totalRecords">-</h5>
+                                                    <p class="card-text small text-muted">Total Records</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="card border-info">
+                                                <div class="card-body text-center">
+                                                    <i class="fas fa-clock fa-2x text-info mb-2"></i>
+                                                    <h5 class="card-title mb-1" id="lastGenerated">-</h5>
+                                                    <p class="card-text small text-muted">Last Generated</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Dataset Search -->
+                                <div class="mb-3">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="datasetSearch" placeholder="Search datasets...">
+                                        <button class="btn btn-outline-secondary" type="button" onclick="refreshDatasets()">
+                                            <i class="fas fa-sync-alt"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Datasets List -->
+                                <div id="datasetsList">
+                                    <div class="text-center text-muted py-4">
+                                        <i class="fas fa-database fa-3x mb-3"></i>
+                                        <h5>No Datasets Found</h5>
+                                        <p>Generate some data to see saved datasets here.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Pagination -->
+                                <nav id="datasetsPagination" class="d-none">
+                                    <ul class="pagination justify-content-center">
+                                        <!-- Pagination will be populated by JavaScript -->
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quality Metrics -->
+                <div class="card shadow-sm mt-3" id="qualityMetricsCard" style="display: none;">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">
+                            <i class="fas fa-chart-line me-2"></i>
+                            Quality Metrics
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row" id="qualityMetrics">
+                            <!-- Quality metrics will be displayed here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Field Template (Hidden) -->
+    <template id="fieldTemplate">
+        <div class="field-item border rounded p-3 mb-2">
+            <div class="row">
+                <div class="col-md-4">
+                    <label class="form-label">Field Name</label>
+                    <input type="text" class="form-control field-name" placeholder="field_name">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Data Type</label>
+                    <select class="form-select field-type">
+                        <option value="STRING">String</option>
+                        <option value="INTEGER">Integer</option>
+                        <option value="FLOAT">Float</option>
+                        <option value="BOOLEAN">Boolean</option>
+                        <option value="DATE">Date</option>
+                        <option value="DATETIME">DateTime</option>
+                        <option value="EMAIL">Email</option>
+                        <option value="PHONE">Phone</option>
+                        <option value="ADDRESS">Address</option>
+                        <option value="NAME">Name</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Required</label>
+                    <div class="form-check mt-2">
+                        <input class="form-check-input field-required" type="checkbox" checked>
+                        <label class="form-check-label">Required</label>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">&nbsp;</label>
+                    <button class="btn btn-outline-danger btn-sm w-100" onclick="removeField(this)">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="field-options mt-2" style="display: none;">
+                <!-- Additional field options will be shown here -->
+            </div>
+        </div>
+    </template>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
