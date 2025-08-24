@@ -31,117 +31,107 @@
             <!-- Left Panel - Schema Configuration -->
             <div class="col-lg-4">
                 <div class="card shadow-sm">
-                    <div class="card-header bg-light">
-                        <h5 class="mb-0">
+                    <div class="card-header bg-primary bg-opacity-10 py-2">
+                        <h6 class="mb-0 text-primary">
                             <i class="fas fa-cogs me-2"></i>
                             Schema Configuration
-                        </h5>
+                        </h6>
                     </div>
-                    <div class="card-body">
-                        <!-- Schema Templates -->
-                        <div class="mb-4">
-                            <label class="form-label fw-bold">Quick Templates</label>
-                            <select class="form-select" id="schemaTemplate">
-                                <option value="">Choose a template...</option>
-                                <option value="user_data">User Data</option>
-                                <option value="ecommerce_products">E-commerce Products</option>
-                                <option value="employee_data">Employee Data</option>
-                                <option value="healthcare_patients">Healthcare Patients</option>
-                            </select>
-                        </div>
-
+                    <div class="card-body py-3">
                         <!-- Schema Name -->
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Schema Name</label>
-                            <input type="text" class="form-control" id="schemaName" placeholder="Enter schema name">
-                        </div>
-
-                        <!-- Schema Description -->
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Description</label>
-                            <textarea class="form-control" id="schemaDescription" rows="2" placeholder="Enter schema description"></textarea>
-                        </div>
-
-                        <!-- Fields Section -->
-                        <div class="mb-3">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <label class="form-label fw-bold mb-0">Fields</label>
-                                <button class="btn btn-sm btn-outline-primary" onclick="addField()">
-                                    <i class="fas fa-plus me-1"></i>
-                                    Add Field
-                                </button>
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <label class="form-label fw-bold small mb-0">Schema Name</label>
+                                <div class="btn-group btn-group-sm">
+                                    <button class="btn btn-outline-secondary btn-sm" onclick="refreshSchemaTemplates()">
+                                        <i class="fas fa-sync-alt"></i>
+                                    </button>
+                                    <button class="btn btn-outline-primary btn-sm" onclick="navigateToSchemaAdmin()">
+                                        <i class="fas fa-cogs me-1"></i>Manage
+                                    </button>
+                                </div>
                             </div>
-                            <div id="fieldsContainer">
-                                <!-- Fields will be added here dynamically -->
+                            <select class="form-select form-select-sm" id="schemaName">
+                                <option value="">Choose a schema...</option>
+                            </select>
+                            <div class="form-text small">
+                                <small>Select a schema from Schema Admin or create a new schema</small>
                             </div>
                         </div>
 
-                        <!-- Validation Button -->
-                        <div class="mb-3">
-                            <button class="btn btn-outline-secondary w-100" onclick="validateSchema()">
-                                <i class="fas fa-check me-1"></i>
-                                Validate Schema
-                            </button>
+                        <!-- Tables Section (Conditional) -->
+                        <div class="mb-2" id="tablesSection" style="display: none;">
+                            <div class="mb-1">
+                                <label class="form-label fw-bold small mb-0">Tables</label>
+                            </div>
+                            <div id="schemaTablesContainer" class="schema-tables-tabs">
+                                <!-- Tables will be added here as tabs -->
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Generation Settings -->
                 <div class="card shadow-sm mt-3">
-                    <div class="card-header bg-light">
-                        <h5 class="mb-0">
+                    <div class="card-header bg-success bg-opacity-10 py-2">
+                        <h6 class="mb-0 text-success">
                             <i class="fas fa-sliders-h me-2"></i>
                             Generation Settings
-                        </h5>
+                        </h6>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body py-3">
                         <!-- Model Selection -->
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Groq Model</label>
-                            <select class="form-select" id="modelSelect">
+                        <div class="mb-2">
+                            <label class="form-label fw-bold small mb-1">Groq Model</label>
+                            <select class="form-select form-select-sm" id="modelSelect">
                                 <!-- Models will be loaded dynamically -->
                             </select>
                         </div>
 
                         <!-- Temperature -->
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Temperature</label>
+                        <div class="mb-2">
+                            <label class="form-label fw-bold small mb-1">Temperature</label>
                             <div class="d-flex align-items-center">
                                 <input type="range" class="form-range flex-grow-1 me-2" id="temperatureSlider" min="0" max="1" step="0.1" value="0.5">
-                                <span class="badge bg-secondary" id="temperatureValue">0.5</span>
+                                <span class="badge bg-info" id="temperatureValue">0.5</span>
                             </div>
-                            <div class="form-text">
+                            <div class="form-text small">
                                 <small>Lower = more consistent, Higher = more creative</small>
                             </div>
                         </div>
 
-                        <!-- Record Count -->
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Record Count</label>
-                            <input type="number" class="form-control" id="recordCount" value="100" min="1" max="10000">
-                        </div>
-
-                        <!-- Quality Options -->
-                        <div class="mb-3">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="contextualGeneration" checked>
-                                <label class="form-check-label" for="contextualGeneration">
-                                    Contextual Generation
-                                </label>
+                        <!-- Record Count and Recursion Limit in a row -->
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                <label class="form-label fw-bold small mb-1">Record Count</label>
+                                <input type="number" class="form-control form-control-sm" id="recordCount" value="100" min="1" max="10000">
                             </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="qualityEnhancement" checked>
-                                <label class="form-check-label" for="qualityEnhancement">
-                                    Quality Enhancement
-                                </label>
+                            <div class="col-6">
+                                <label class="form-label fw-bold small mb-1">Recursion Limit</label>
+                                <input type="number" class="form-control form-control-sm" id="recursionLimit" value="1000" min="100" max="10000">
                             </div>
                         </div>
 
-                        <!-- Generate Button -->
-                        <button class="btn btn-primary w-100" onclick="generateData()" id="generateBtn">
-                            <i class="fas fa-magic me-1"></i>
-                            Generate Data
-                        </button>
+                        <!-- Quality Options and Generate Button in a row -->
+                        <div class="row align-items-end">
+                            <div class="col-8">
+                                <div class="form-check mb-0">
+                                    <input class="form-check-input" type="checkbox" id="contextualGeneration" checked>
+                                    <label class="form-check-label small" for="contextualGeneration">
+                                        Contextual Generation
+                                    </label>
+                                </div>
+                                <div class="form-text small">
+                                    <small>Increase recursion limit if generation fails</small>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <button class="btn btn-success btn-sm w-100" onclick="generateData()" id="generateBtn">
+                                    <i class="fas fa-magic me-1"></i>
+                                    Generate
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -164,6 +154,18 @@
                                     Saved Datasets
                                 </button>
                             </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="generated-sql-tab" data-bs-toggle="tab" data-bs-target="#generated-sql-pane" type="button" role="tab">
+                                    <i class="fas fa-code me-2"></i>
+                                    Generated SQL
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="schema-admin-tab" data-bs-toggle="tab" data-bs-target="#schema-admin-pane" type="button" role="tab">
+                                    <i class="fas fa-cogs me-2"></i>
+                                    Schema Admin
+                                </button>
+                            </li>
                         </ul>
                     </div>
                     <div class="card-body">
@@ -180,7 +182,7 @@
                         </div>
 
                         <!-- Results Container -->
-                        <div id="resultsContainer">
+                        <div id="resultsContainer" class="results-container">
                             <!-- Welcome Message -->
                             <div class="text-center text-muted py-5">
                                 <i class="fas fa-database fa-3x mb-3"></i>
@@ -193,6 +195,10 @@
                         <div id="exportButtons" class="mt-3 d-none">
                             <hr>
                             <div class="d-flex gap-2">
+                                <button class="btn btn-primary" onclick="saveToDataset()">
+                                    <i class="fas fa-save me-1"></i>
+                                    Save to Dataset
+                                </button>
                                 <button class="btn btn-outline-success" onclick="exportData('csv')">
                                     <i class="fas fa-file-csv me-1"></i>
                                     Export CSV
@@ -201,6 +207,7 @@
                                     <i class="fas fa-file-code me-1"></i>
                                     Export JSON
                                 </button>
+
                             </div>
                         </div>
                             </div>
@@ -266,27 +273,441 @@
                                     </ul>
                                 </nav>
                             </div>
+
+
+
+                            <!-- Schema Admin Tab -->
+                            <div class="tab-pane fade" id="schema-admin-pane" role="tabpanel">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                                <h5><i class="fas fa-cogs me-2"></i>Schema Administration</h5>
+                                                <div class="btn-group">
+                                                    <button class="btn btn-outline-primary" onclick="refreshSchemasInTab()">
+                                                        <i class="fas fa-sync-alt me-1"></i>Refresh
+                                                    </button>
+                                                    <button class="btn btn-success" onclick="showCreateSchemaModalInTab()">
+                                                        <i class="fas fa-plus me-1"></i>New Schema
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <!-- Schema Templates Table -->
+                                            <div class="card">
+                                                <div class="card-body p-0">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-hover mb-0">
+                                                            <thead class="table-light">
+                                                                <tr>
+                                                                    <th width="25%">Schema Name</th>
+                                                                    <th width="35%">Description</th>
+                                                                    <th width="15%">Tables</th>
+                                                                    <th width="10%">Fields</th>
+                                                                    <th width="15%">Actions</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="schemasTableBody">
+                                                                <tr>
+                                                                    <td colspan="5" class="text-center text-muted py-5">
+                                                                        <i class="fas fa-cogs fa-2x mb-3 d-block"></i>
+                                                                        <h5>No Schema Templates Yet</h5>
+                                                                        <p class="mb-0">Create your first schema template to get started.</p>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Quality Metrics -->
-                <div class="card shadow-sm mt-3" id="qualityMetricsCard" style="display: none;">
-                    <div class="card-header bg-light">
-                        <h5 class="mb-0">
-                            <i class="fas fa-chart-line me-2"></i>
-                            Quality Metrics
-                        </h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row" id="qualityMetrics">
-                            <!-- Quality metrics will be displayed here -->
+                            <!-- Generated SQL Tab -->
+                            <div class="tab-pane fade" id="generated-sql-pane" role="tabpanel">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                                <h5><i class="fas fa-code me-2"></i>Generated SQL Management</h5>
+                                                <div class="btn-group">
+                                                    <button class="btn btn-outline-primary" onclick="refreshGeneratedSQL()">
+                                                        <i class="fas fa-sync-alt me-1"></i>Refresh
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <!-- Generated SQL Table -->
+                                            <div class="card">
+                                                <div class="card-body p-0">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-hover mb-0">
+                                                            <thead class="table-light">
+                                                                <tr>
+                                                                    <th width="20%">SQL Name</th>
+                                                                    <th width="25%">Description</th>
+                                                                    <th width="15%">Dialect</th>
+                                                                    <th width="10%">Records</th>
+                                                                    <th width="15%">Created</th>
+                                                                    <th width="15%">Actions</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="generatedSQLTableBody">
+                                                                <tr>
+                                                                    <td colspan="6" class="text-center text-muted py-5">
+                                                                        <i class="fas fa-code fa-2x mb-3 d-block"></i>
+                                                                        <h5>No Generated SQL Yet</h5>
+                                                                        <p class="mb-0">Generate SQL from your datasets to see them here.</p>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+    <!-- SQL Generation Modal will be dynamically created by JavaScript -->
+
+    <!-- Schema Modal -->
+    <div class="modal fade" id="schemaModalInTab" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-cogs me-2"></i>
+                        <span id="modalTitleInTab">Create New Schema</span>
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="schemaFormInTab">
+                        <input type="hidden" id="schemaIdInTab" value="">
+                        
+                        <!-- Basic Info -->
+                        <div class="row mb-4">
+                            <div class="col-md-12">
+                                <label class="form-label fw-bold">Schema Name *</label>
+                                <input type="text" class="form-control" id="schemaNameInTab" required>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Description</label>
+                            <textarea class="form-control" id="schemaDescriptionInTab" rows="3"></textarea>
+                        </div>
+
+                        <!-- Tables Section -->
+                        <div class="mb-4">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6 class="mb-0 fw-bold">Tables</h6>
+                                <button type="button" class="btn btn-sm btn-primary" onclick="addTableInTab()">
+                                    <i class="fas fa-plus me-1"></i>Add Table
+                                </button>
+                            </div>
+                            <div id="tablesContainerInTab">
+                                <!-- Tables will be added here -->
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="saveSchemaInTab()">
+                        <i class="fas fa-save me-1"></i>Save Schema
+                    </button>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Styles for Schema Admin Tab and Results Display -->
+    <style>
+        .schema-card {
+            transition: all 0.3s ease;
+        }
+        .schema-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .field-item {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .table-item {
+            background-color: #ffffff;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+        .btn-action {
+            min-width: 80px;
+        }
+        
+        /* Results Container Styles */
+        .results-container {
+            max-height: 60vh;
+            overflow-y: auto;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .results-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .results-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        
+        .results-container::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 4px;
+        }
+        
+        .results-container::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+        
+        /* Multi-table Tabs Styles */
+        .multi-table-tabs {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+        }
+        
+        .multi-table-tabs .nav-tabs {
+            border-bottom: 2px solid #dee2e6;
+            background-color: #f8f9fa;
+            border-radius: 8px 8px 0 0;
+        }
+        
+        .multi-table-tabs .nav-tabs .nav-link {
+            border: none;
+            border-radius: 0;
+            color: #6c757d;
+            font-weight: 500;
+            padding: 12px 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .multi-table-tabs .nav-tabs .nav-link:hover {
+            background-color: #e9ecef;
+            color: #495057;
+        }
+        
+        .multi-table-tabs .nav-tabs .nav-link.active {
+            background-color: #ffffff;
+            color: #0d6efd;
+            border-bottom: 3px solid #0d6efd;
+            font-weight: 600;
+        }
+        
+        .multi-table-tabs .tab-content {
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 0 0 8px 8px;
+        }
+        
+        /* Data Table Styles */
+        .data-table-container {
+            max-height: 50vh;
+            overflow-y: auto;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+        }
+        
+        .data-table-container table {
+            margin-bottom: 0;
+        }
+        
+        .data-table-container thead th {
+            position: sticky;
+            top: 0;
+            background-color: #f8f9fa;
+            z-index: 10;
+            border-bottom: 2px solid #dee2e6;
+        }
+        
+        /* Table Badge Styles */
+        .table-badge {
+            background-color: #e9ecef;
+            color: #495057;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .table-badge.primary {
+            background-color: #cce7ff;
+            color: #0d6efd;
+        }
+        
+        .table-badge.success {
+            background-color: #d1e7dd;
+            color: #198754;
+        }
+        
+        /* Schema Tables Tabs Styles */
+        .schema-tables-tabs {
+            background-color: #ffffff;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .schema-tables-tabs .nav-tabs {
+            border-bottom: 2px solid #dee2e6;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0 15px;
+        }
+        
+        .schema-tables-tabs .nav-tabs .nav-link {
+            border: none;
+            border-radius: 0;
+            color: #6c757d;
+            font-weight: 500;
+            padding: 12px 20px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .schema-tables-tabs .nav-tabs .nav-link:hover {
+            background-color: #e9ecef;
+            color: #495057;
+        }
+        
+        .schema-tables-tabs .nav-tabs .nav-link.active {
+            background-color: #ffffff;
+            color: #0d6efd;
+            border-bottom: 3px solid #0d6efd;
+            font-weight: 600;
+        }
+        
+        .schema-tables-tabs .nav-tabs .nav-link .table-name {
+            font-weight: 600;
+        }
+        
+        .schema-tables-tabs .nav-tabs .nav-link .remove-table-btn {
+            margin-left: 8px;
+            padding: 2px 6px;
+            border-radius: 12px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            font-size: 0.7rem;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+        
+        .schema-tables-tabs .nav-tabs .nav-link .remove-table-btn:hover {
+            opacity: 1;
+        }
+        
+        .schema-tables-tabs .tab-content {
+            padding: 20px;
+            background-color: #ffffff;
+        }
+        
+        .schema-tables-tabs .tab-pane {
+            min-height: 200px;
+        }
+        
+        .schema-tables-tabs .field-item {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .schema-tables-tabs .field-item:hover {
+            background-color: #e9ecef;
+        }
+        
+        .schema-tables-tabs .add-field-btn {
+            width: 100%;
+            padding: 10px;
+            border: 2px dashed #dee2e6;
+            background-color: transparent;
+            color: #6c757d;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .schema-tables-tabs .add-field-btn:hover {
+            border-color: #0d6efd;
+            color: #0d6efd;
+            background-color: #f8f9ff;
+        }
+    </style>
+
+    <!-- Table Template (Hidden) -->
+    <template id="tableTemplate">
+        <div class="table-item border rounded p-3 mb-3">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 class="mb-0">
+                    <i class="fas fa-table me-2"></i>
+                    <span class="table-name">Table</span>
+                </h6>
+                <div class="btn-group btn-group-sm">
+                    <button type="button" class="btn btn-outline-danger" onclick="removeTableFromSchema(this)">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Table Name</label>
+                    <input type="text" class="form-control table-name-input" placeholder="table_name" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Display Name</label>
+                    <input type="text" class="form-control table-display-name" placeholder="Table Display Name">
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <label class="form-label mb-0">Fields</label>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addFieldToTable(this)">
+                        <i class="fas fa-plus me-1"></i>
+                        Add Field
+                    </button>
+                </div>
+                <div class="table-fields-container">
+                    <!-- Fields will be added here dynamically -->
+                </div>
+            </div>
+        </div>
+    </template>
 
     <!-- Field Template (Hidden) -->
     <template id="fieldTemplate">

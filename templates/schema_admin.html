@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schema Admin - Synthetic Data Generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .schema-card {
+            transition: all 0.3s ease;
+        }
+        .schema-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .field-item {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .table-item {
+            background-color: #ffffff;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+        .btn-action {
+            min-width: 80px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2><i class="fas fa-cogs me-2"></i>Schema Administration</h2>
+                    <div class="btn-group">
+                        <button class="btn btn-outline-primary" onclick="refreshSchemas()">
+                            <i class="fas fa-sync-alt me-1"></i>Refresh
+                        </button>
+                        <button class="btn btn-success" onclick="showCreateModal()">
+                            <i class="fas fa-plus me-1"></i>New Schema
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Schema Templates List -->
+                <div id="schemasList" class="row">
+                    <div class="col-12 text-center text-muted py-5">
+                        <i class="fas fa-cogs fa-3x mb-3"></i>
+                        <h4>No Schema Templates Yet</h4>
+                        <p>Create your first schema template to get started.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create/Edit Schema Modal -->
+    <div class="modal fade" id="schemaModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-cogs me-2"></i>
+                        <span id="modalTitle">Create New Schema</span>
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="schemaForm">
+                        <input type="hidden" id="schemaId" value="">
+                        
+                        <!-- Basic Info -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Schema Name *</label>
+                                <input type="text" class="form-control" id="schemaName" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Category</label>
+                                <select class="form-select" id="schemaCategory">
+                                    <option value="custom">Custom</option>
+                                    <option value="ecommerce">E-commerce</option>
+                                    <option value="healthcare">Healthcare</option>
+                                    <option value="finance">Finance</option>
+                                    <option value="education">Education</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Description</label>
+                            <textarea class="form-control" id="schemaDescription" rows="3"></textarea>
+                        </div>
+
+                        <!-- Tables Section -->
+                        <div class="mb-4">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6 class="mb-0 fw-bold">Tables</h6>
+                                <button type="button" class="btn btn-sm btn-primary" onclick="addTable()">
+                                    <i class="fas fa-plus me-1"></i>Add Table
+                                </button>
+                            </div>
+                            <div id="tablesContainer">
+                                <!-- Tables will be added here -->
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="saveSchema()">
+                        <i class="fas fa-save me-1"></i>Save Schema
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        let currentSchemas = [];
+        let editingSchemaId = null;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            refreshSchemas();
+        });
+
+        // Load schemas
+        async function refreshSchemas() {
+            try {
+                const response = await fetch('/api/schema-templates');
+                const data = await response.json();
+                
+                if (data.success) {
+                    currentSchemas = data.templates;
+                    displaySchemas(data.templates);
+                } else {
+                    showAlert('Failed to load schemas: ' + data.error, 'danger');
+                }
+            } catch (error) {
+                showAlert('Failed to load schemas: ' + error.message, 'danger');
+            }
+        }
+
+        // Display schemas
+        function displaySchemas(schemas) {
+            const container = document.getElementById('schemasList');
+            
+            if (!schemas || schemas.length === 0) {
+                container.innerHTML = `
+                    <div class="col-12 text-center text-muted py-5">
+                        <i class="fas fa-cogs fa-3x mb-3"></i>
+                        <h4>No Schema Templates Yet</h4>
+                        <p>Create your first schema template to get started.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = schemas.map(schema => `
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card schema-card h-100">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0">${schema.name}</h6>
+                            <div class="btn-group btn-group-sm">
+                                <button class="btn btn-outline-primary btn-sm" onclick="editSchema(${schema.id})">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-outline-danger btn-sm" onclick="deleteSchema(${schema.id})">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-muted small mb-2">${schema.description || 'No description'}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="badge bg-secondary">${schema.category}</span>
+                                <small class="text-muted">${new Date(schema.created_at).toLocaleDateString()}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Show create modal
+        function showCreateModal() {
+            editingSchemaId = null;
+            document.getElementById('modalTitle').textContent = 'Create New Schema';
+            document.getElementById('schemaForm').reset();
+            document.getElementById('tablesContainer').innerHTML = '';
+            addTable(); // Add initial table
+            new bootstrap.Modal(document.getElementById('schemaModal')).show();
+        }
+
+        // Add table
+        function addTable() {
+            const container = document.getElementById('tablesContainer');
+            const tableCount = container.children.length + 1;
+            
+            const tableHtml = `
+                <div class="table-item p-3">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6 class="mb-0">Table ${tableCount}</h6>
+                        <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeTable(this)">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Table Name *</label>
+                            <input type="text" class="form-control table-name" placeholder="table_name" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Display Name</label>
+                            <input type="text" class="form-control table-display-name" placeholder="Table Display Name">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <label class="form-label mb-0">Fields</label>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addField(this)">
+                                <i class="fas fa-plus me-1"></i>Add Field
+                            </button>
+                        </div>
+                        <div class="fields-container">
+                            <!-- Fields will be added here -->
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            container.insertAdjacentHTML('beforeend', tableHtml);
+            addField(container.lastElementChild.querySelector('.fields-container').parentElement.querySelector('.btn-outline-secondary'));
+        }
+
+        // Remove table
+        function removeTable(button) {
+            button.closest('.table-item').remove();
+        }
+
+        // Add field
+        function addField(button) {
+            const fieldsContainer = button.parentElement.nextElementSibling;
+            const fieldCount = fieldsContainer.children.length + 1;
+            
+            const fieldHtml = `
+                <div class="field-item p-3">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="form-label">Field Name *</label>
+                            <input type="text" class="form-control field-name" placeholder="field_name" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Data Type</label>
+                            <select class="form-select field-type">
+                                <option value="STRING">String</option>
+                                <option value="INTEGER">Integer</option>
+                                <option value="FLOAT">Float</option>
+                                <option value="BOOLEAN">Boolean</option>
+                                <option value="DATE">Date</option>
+                                <option value="DATETIME">DateTime</option>
+                                <option value="EMAIL">Email</option>
+                                <option value="PHONE">Phone</option>
+                                <option value="ADDRESS">Address</option>
+                                <option value="NAME">Name</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Required</label>
+                            <div class="form-check mt-2">
+                                <input class="form-check-input field-required" type="checkbox" checked>
+                                <label class="form-check-label">Required</label>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">&nbsp;</label>
+                            <button class="btn btn-outline-danger btn-sm w-100" onclick="removeField(this)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            fieldsContainer.insertAdjacentHTML('beforeend', fieldHtml);
+        }
+
+        // Remove field
+        function removeField(button) {
+            button.closest('.field-item').remove();
+        }
+
+        // Save schema
+        async function saveSchema() {
+            try {
+                const name = document.getElementById('schemaName').value.trim();
+                if (!name) {
+                    showAlert('Schema name is required', 'danger');
+                    return;
+                }
+
+                const tables = [];
+                const tableItems = document.querySelectorAll('.table-item');
+                
+                for (let tableItem of tableItems) {
+                    const tableName = tableItem.querySelector('.table-name').value.trim();
+                    if (!tableName) {
+                        showAlert('All tables must have a name', 'danger');
+                        return;
+                    }
+
+                    const fields = [];
+                    const fieldItems = tableItem.querySelectorAll('.field-item');
+                    
+                    for (let fieldItem of fieldItems) {
+                        const fieldName = fieldItem.querySelector('.field-name').value.trim();
+                        if (!fieldName) {
+                            showAlert('All fields must have a name', 'danger');
+                            return;
+                        }
+
+                        fields.push({
+                            name: fieldName,
+                            type: fieldItem.querySelector('.field-type').value,
+                            required: fieldItem.querySelector('.field-required').checked
+                        });
+                    }
+
+                    if (fields.length === 0) {
+                        showAlert('All tables must have at least one field', 'danger');
+                        return;
+                    }
+
+                    tables.push({
+                        name: tableName,
+                        display_name: tableItem.querySelector('.table-display-name').value.trim() || tableName,
+                        fields: fields
+                    });
+                }
+
+                if (tables.length === 0) {
+                    showAlert('Schema must have at least one table', 'danger');
+                    return;
+                }
+
+                const schemaData = {
+                    name: name,
+                    description: document.getElementById('schemaDescription').value.trim(),
+                    category: document.getElementById('schemaCategory').value,
+                    schema_definition: {
+                        name: name,
+                        description: document.getElementById('schemaDescription').value.trim(),
+                        tables: tables
+                    }
+                };
+
+                const url = editingSchemaId ? `/api/schema-templates/${editingSchemaId}` : '/api/schema-templates';
+                const method = editingSchemaId ? 'PUT' : 'POST';
+
+                const response = await fetch(url, {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(schemaData)
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    showAlert(`Schema ${editingSchemaId ? 'updated' : 'created'} successfully!`, 'success');
+                    bootstrap.Modal.getInstance(document.getElementById('schemaModal')).hide();
+                    refreshSchemas();
+                } else {
+                    showAlert('Failed to save schema: ' + data.error, 'danger');
+                }
+            } catch (error) {
+                showAlert('Failed to save schema: ' + error.message, 'danger');
+            }
+        }
+
+        // Edit schema
+        async function editSchema(schemaId) {
+            try {
+                const response = await fetch(`/api/schema-templates/${schemaId}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    const schema = data.template;
+                    editingSchemaId = schemaId;
+                    
+                    document.getElementById('modalTitle').textContent = 'Edit Schema';
+                    document.getElementById('schemaId').value = schemaId;
+                    document.getElementById('schemaName').value = schema.name;
+                    document.getElementById('schemaDescription').value = schema.description || '';
+                    document.getElementById('schemaCategory').value = schema.category;
+                    
+                    // Clear and populate tables
+                    document.getElementById('tablesContainer').innerHTML = '';
+                    
+                    if (schema.schema_definition.tables) {
+                        schema.schema_definition.tables.forEach(tableDef => {
+                            addTableWithData(tableDef);
+                        });
+                    } else {
+                        addTable(); // Add empty table if no tables
+                    }
+                    
+                    new bootstrap.Modal(document.getElementById('schemaModal')).show();
+                } else {
+                    showAlert('Failed to load schema: ' + data.error, 'danger');
+                }
+            } catch (error) {
+                showAlert('Failed to load schema: ' + error.message, 'danger');
+            }
+        }
+
+        // Add table with data
+        function addTableWithData(tableDef) {
+            addTable();
+            const lastTable = document.querySelector('.table-item:last-child');
+            
+            lastTable.querySelector('.table-name').value = tableDef.name;
+            lastTable.querySelector('.table-display-name').value = tableDef.display_name || tableDef.name;
+            
+            const fieldsContainer = lastTable.querySelector('.fields-container');
+            fieldsContainer.innerHTML = '';
+            
+            tableDef.fields.forEach(fieldDef => {
+                addFieldToContainer(fieldsContainer, fieldDef);
+            });
+        }
+
+        // Add field to container
+        function addFieldToContainer(container, fieldDef) {
+            const fieldHtml = `
+                <div class="field-item p-3">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="form-label">Field Name *</label>
+                            <input type="text" class="form-control field-name" value="${fieldDef.name}" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Data Type</label>
+                            <select class="form-select field-type">
+                                <option value="STRING" ${fieldDef.type === 'STRING' ? 'selected' : ''}>String</option>
+                                <option value="INTEGER" ${fieldDef.type === 'INTEGER' ? 'selected' : ''}>Integer</option>
+                                <option value="FLOAT" ${fieldDef.type === 'FLOAT' ? 'selected' : ''}>Float</option>
+                                <option value="BOOLEAN" ${fieldDef.type === 'BOOLEAN' ? 'selected' : ''}>Boolean</option>
+                                <option value="DATE" ${fieldDef.type === 'DATE' ? 'selected' : ''}>Date</option>
+                                <option value="DATETIME" ${fieldDef.type === 'DATETIME' ? 'selected' : ''}>DateTime</option>
+                                <option value="EMAIL" ${fieldDef.type === 'EMAIL' ? 'selected' : ''}>Email</option>
+                                <option value="PHONE" ${fieldDef.type === 'PHONE' ? 'selected' : ''}>Phone</option>
+                                <option value="ADDRESS" ${fieldDef.type === 'ADDRESS' ? 'selected' : ''}>Address</option>
+                                <option value="NAME" ${fieldDef.type === 'NAME' ? 'selected' : ''}>Name</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Required</label>
+                            <div class="form-check mt-2">
+                                <input class="form-check-input field-required" type="checkbox" ${fieldDef.required !== false ? 'checked' : ''}>
+                                <label class="form-check-label">Required</label>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">&nbsp;</label>
+                            <button class="btn btn-outline-danger btn-sm w-100" onclick="removeField(this)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            container.insertAdjacentHTML('beforeend', fieldHtml);
+        }
+
+        // Delete schema
+        async function deleteSchema(schemaId) {
+            if (!confirm('Are you sure you want to delete this schema template?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/schema-templates/${schemaId}`, {
+                    method: 'DELETE'
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showAlert('Schema deleted successfully!', 'success');
+                    refreshSchemas();
+                } else {
+                    showAlert('Failed to delete schema: ' + data.error, 'danger');
+                }
+            } catch (error) {
+                showAlert('Failed to delete schema: ' + error.message, 'danger');
+            }
+        }
+
+        // Show alert
+        function showAlert(message, type = 'info') {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+            alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            document.body.appendChild(alertDiv);
+            
+            setTimeout(() => {
+                if (alertDiv.parentNode) {
+                    alertDiv.remove();
+                }
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

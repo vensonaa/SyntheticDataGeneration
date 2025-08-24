@@ -5,6 +5,7 @@ from datetime import datetime
 from .models import GenerationState, SchemaDefinition, GeneratedRecord
 from .graph_nodes import create_synthetic_data_graph, create_parallel_generation_graph, create_adaptive_generation_graph
 from .validators import QualityMetrics
+from .sqlite_storage import get_storage_manager
 
 
 class SyntheticDataGenerator:
@@ -37,6 +38,7 @@ class SyntheticDataGenerator:
         Args:
             schema: Schema definition for the data to generate
             **kwargs: Additional parameters for generation
+                - recursion_limit: Maximum recursion limit (default: 1000)
             
         Returns:
             Dictionary containing generated data and metadata
@@ -47,9 +49,12 @@ class SyntheticDataGenerator:
             context=kwargs
         )
         
+        # Get recursion limit from kwargs or use default
+        recursion_limit = kwargs.get('recursion_limit', 1000)
+        
         # Run the graph
         try:
-            final_state = self.app.invoke(initial_state, config={"recursion_limit": 200})
+            final_state = self.app.invoke(initial_state, config={"recursion_limit": recursion_limit})
             
             # Handle different state types
             if hasattr(final_state, 'generated_records'):
@@ -141,6 +146,121 @@ class SyntheticDataGenerator:
         df = self.generate_dataframe(schema, **kwargs)
         df.to_csv(output_path, index=False)
         return output_path
+    
+    def generate_to_sqlite(self, schema: SchemaDefinition, table_name: str = None, 
+                          db_path: str = None, **kwargs) -> Dict[str, Any]:
+        """
+        Generate synthetic data and store in SQLite database
+        
+        Args:
+            schema: Schema definition for the data to generate
+            table_name: Name of the table to create/use (defaults to schema name)
+            db_path: Path to SQLite database file
+            **kwargs: Additional parameters for generation
+            
+        Returns:
+            Dictionary with generation and storage results
+        """
+        # Generate data
+        results = self.generate_data(schema, **kwargs)
+        
+        if "error" in results:
+            return results
+        
+        # Determine table name
+        if table_name is None:
+            table_name = schema.name.lower().replace(' ', '_').replace('-', '_')
+        
+        # Get storage manager
+        storage_manager = get_storage_manager(db_path)
+        
+        # Store data in SQLite
+        storage_result = storage_manager.insert_data(
+            table_name=table_name,
+            data=results.get('generated_records', []),
+            schema_definition=schema.dict()
+        )
+        
+        # Combine results
+        combined_results = {
+            **results,
+            'storage_result': storage_result,
+            'table_name': table_name,
+            'database_path': storage_manager.db_path
+        }
+        
+        return combined_results
+    
+    def generate_with_storage_options(self, schema: SchemaDefinition, 
+                                    storage_options: Dict[str, Any] = None, **kwargs) -> Dict[str, Any]:
+        """
+        Generate synthetic data with flexible storage options
+        
+        Args:
+            schema: Schema definition for the data to generate
+            storage_options: Dictionary with storage configuration
+                - save_to_sqlite: bool (default True)
+                - save_to_csv: bool (default False)
+                - table_name: str (optional)
+                - db_path: str (optional)
+                - csv_path: str (optional)
+            **kwargs: Additional parameters for generation
+            
+        Returns:
+            Dictionary with generation and storage results
+        """
+        if storage_options is None:
+            storage_options = {}
+        
+        # Default storage options
+        save_to_sqlite = storage_options.get('save_to_sqlite', True)
+        save_to_csv = storage_options.get('save_to_csv', False)
+        table_name = storage_options.get('table_name')
+        db_path = storage_options.get('db_path')
+        csv_path = storage_options.get('csv_path')
+        
+        # Generate data
+        results = self.generate_data(schema, **kwargs)
+        
+        if "error" in results:
+            return results
+        
+        storage_results = {}
+        
+        # Store in SQLite if requested
+        if save_to_sqlite:
+            if table_name is None:
+                table_name = schema.name.lower().replace(' ', '_').replace('-', '_')
+            
+            storage_manager = get_storage_manager(db_path)
+            sqlite_result = storage_manager.insert_data(
+                table_name=table_name,
+                data=results.get('generated_records', []),
+                schema_definition=schema.dict()
+            )
+            storage_results['sqlite'] = sqlite_result
+        
+        # Save to CSV if requested
+        if save_to_csv:
+            if csv_path is None:
+                csv_path = f"{schema.name.lower().replace(' ', '_')}.csv"
+            
+            df = pd.DataFrame([record['data'] for record in results.get('generated_records', [])])
+            df.to_csv(csv_path, index=False)
+            storage_results['csv'] = {
+                'success': True,
+                'file_path': csv_path,
+                'record_count': len(df)
+            }
+        
+        # Combine results
+        combined_results = {
+            **results,
+            'storage_results': storage_results,
+            'storage_options_used': storage_options
+        }
+        
+        return combined_results
     
     def validate_schema(self, schema: SchemaDefinition) -> Dict[str, Any]:
         """

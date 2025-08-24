@@ -3,6 +3,7 @@ from pydantic import BaseModel, Field
 from enum import Enum
 
 
+
 class DataType(str, Enum):
     """Supported data types for synthetic data generation"""
     STRING = "string"
@@ -64,3 +65,6 @@ class GenerationState(BaseModel):
     
     class Config:
         populate_by_name = True
+
+
+

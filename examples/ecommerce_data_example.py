@@ -354,11 +354,64 @@ def generate_related_data():
     orders_df = orders_df.drop('calculated_total', axis=1)
     
     # Save all data
-    print("💾 Saving data to files...")
+    print("💾 Saving data to files and SQLite database...")
+    
+    # Save to CSV files (existing functionality)
     products_df.to_csv("generated_products.csv", index=False)
     customers_df.to_csv("generated_customers.csv", index=False)
     orders_df.to_csv("generated_orders.csv", index=False)
     order_items_df.to_csv("generated_order_items.csv", index=False)
+    
+    # NEW: Save to SQLite database
+    try:
+        from src.sqlite_storage import get_storage_manager
+        
+        storage_manager = get_storage_manager("ecommerce_data.db")
+        
+        # Convert DataFrames to records format
+        def df_to_records(df, table_name):
+            records = []
+            for _, row in df.iterrows():
+                record = {
+                    'data': row.to_dict(),
+                    'is_valid': True,
+                    'validation_errors': [],
+                    'generation_metadata': {
+                        'source': 'ecommerce_example',
+                        'table': table_name,
+                        'generated_at': datetime.now().isoformat()
+                    }
+                }
+                records.append(record)
+            return records
+        
+        # Store each table in SQLite
+        tables_data = {
+            'products': (products_df, create_product_schema()),
+            'customers': (customers_df, create_customer_schema()),
+            'orders': (orders_df, create_order_schema()),
+            'order_items': (order_items_df, create_order_item_schema())
+        }
+        
+        for table_name, (df, schema) in tables_data.items():
+            records = df_to_records(df, table_name)
+            result = storage_manager.insert_data(
+                table_name=table_name,
+                data=records,
+                schema_definition=schema.dict()
+            )
+            
+            if result.get('success'):
+                print(f"✅ Stored {result['inserted_count']} records in SQLite table '{table_name}'")
+            else:
+                print(f"⚠️ Failed to store {table_name}: {result.get('message', 'Unknown error')}")
+        
+        print(f"🗄️ All data stored in SQLite database: {storage_manager.db_path}")
+        
+    except ImportError:
+        print("⚠️ SQLite storage module not available, skipping database storage")
+    except Exception as e:
+        print(f"⚠️ Error storing to SQLite: {e}")
     
     # Generate summary report
     print("\n📊 E-commerce Data Summary:")
